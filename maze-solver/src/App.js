@@ -41,7 +41,7 @@ class App extends Component {
     super();
     this.state = {
       searchType: "DFS",
-      gridSize: [16, 16],
+      gridSize: [24, 24],
       activated: false,
       boardState: [[]],
       searchEdge: [[0,0]]
@@ -69,16 +69,12 @@ class App extends Component {
   searchStep(){
     let border = this.state.searchEdge;
     let boardState = this.state.boardState;
-    console.log(boardState);
     let el;
-    console.log(border);
     if(this.state.searchType === "DFS"){
-      el = border.shift();
-      console.log(el);
+      el = border.pop();
     } else {
       el = border.shift();
     }
-    console.log(border);
     boardState[el[0]][el[1]].dead = true;
     for (let i = 0; i < ADJACENCY_TYPES.length; i++) {
       let adj = ADJACENCY_TYPES[i];
@@ -88,7 +84,6 @@ class App extends Component {
         boardState[adj[0]][adj[1]].border = true;
       }
     }
-    console.log(boardState);
     this.setState({searchEdge: border, boardState: boardState});
   }
 
