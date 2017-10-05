@@ -22,6 +22,22 @@
   background-color: #555152;
 }
 
+.start--true {
+  background-color: #0101EE;
+}
+
+.end--true {
+  background-color: #01EE01;
+}
+
+.border--true {
+  background-color: #99173C;
+}
+
+.dead--true {
+  background-color: #DCE9BE;
+}
+
 .control__panel {
   max-width: 400px;
   display: flex;

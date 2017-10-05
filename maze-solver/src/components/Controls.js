@@ -5,7 +5,7 @@ function Controls(props) {
     <div className="control__panel">
       <button onClick={props.randomize}> Randomize </button>
       <button> Search Type </button>
-      <button> Start! </button>
+      <button onClick={props.solve}> Start! </button>
     </div>
   );
 }
