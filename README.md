@@ -72,3 +72,11 @@ The final option is an A* search. Like Greedy Search, A* uses a priority queue a
 [A* Search][astar]
 
 [astar]: https://en.wikipedia.org/wiki/A*_search_algorithm
+
+## Planned Features
+
+- At present, the abstract data types (ring buffer and priority queue) are implemented sub-optimally in the code. When time permits, we will replace them with the correct data structures.
+
+- Users should be able to custom-define their mazes by changing the dimensions and by clicking on tiles to toggle them blocked or not.
+
+- We plan to perform additional styling to make the website itself more visually appealing, and additional refactoring to make the JavaScript code more modular and readable.
