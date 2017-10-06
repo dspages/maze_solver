@@ -11,21 +11,27 @@ const DEFAULT_TILE = ()=>{
   };
 };
 
-const BLOCKED_TILE = {
-  blocked: true,
-  dead: false
+const BLOCKED_TILE = () => {
+  return {
+    blocked: true,
+    dead: false
+  };
 };
 
-const START_TILE = {
-  blocked: false,
-  start: true,
-  dead: false
+const START_TILE = () => {
+  return {
+    blocked: false,
+    start: true,
+    dead: false
+  };
 };
 
-const END_TILE = {
-  blocked: false,
-  end: true,
-  dead: false
+const END_TILE = () => {
+  return {
+    blocked: false,
+    end: true,
+    dead: false
+  };
 };
 
 const ADJACENCY_TYPES = [
@@ -41,7 +47,7 @@ class App extends Component {
     super();
     this.state = {
       searchType: "DFS",
-      gridSize: [24, 24],
+      gridSize: [16, 32],
       activated: false,
       boardState: [[]],
       searchEdge: [[0,0]]
@@ -55,7 +61,7 @@ class App extends Component {
   solve(){
     //if (this.state.activated === true) return;
     this.setState({activated: true});
-    setInterval(this.searchStep, 200);
+    this.interval = setInterval(this.searchStep, 50);
   }
 
   validTile(tile, boardState){
@@ -68,6 +74,12 @@ class App extends Component {
 
   searchStep(){
     let border = this.state.searchEdge;
+    if (border.length === 0){
+      clearInterval(this.interval);
+      alert("Maze is impossible!");
+      return;
+    }
+
     let boardState = this.state.boardState;
     let el;
     if(this.state.searchType === "DFS"){
@@ -82,13 +94,22 @@ class App extends Component {
       if (this.validTile(adj, boardState)){
         border.push(adj);
         boardState[adj[0]][adj[1]].border = true;
+        if (boardState[adj[0]][adj[1]].end === true){
+          clearInterval(this.interval);
+          this.setState({searchEdge: border, boardState: boardState});
+          setTimeout( ()=>{alert("Maze is solved!");} , 100);
+          return;
+        }
       }
     }
     this.setState({searchEdge: border, boardState: boardState});
   }
 
   randomize() {
-    this.setState({boardState: this.generateBoard('random') });
+    this.setState({
+      boardState: this.generateBoard('random'),
+      searchEdge: [[0,0]]
+    });
   }
 
   generateBoard(type) {
@@ -101,15 +122,15 @@ class App extends Component {
           ary[i][j] = DEFAULT_TILE();
         } else {
           if ((parseInt(Math.random() * 3) === 1) && (i > 1 || j > 1)) {
-            ary[i][j] = BLOCKED_TILE;
+            ary[i][j] = BLOCKED_TILE();
           } else {
             ary[i][j] = DEFAULT_TILE();
           }
         }
       }
     }
-    ary[0][0] = START_TILE;
-    ary[size[0] - 1][size[1] - 1] = END_TILE;
+    ary[0][0] = START_TILE();
+    ary[size[0] - 1][size[1] - 1] = END_TILE();
     return ary;
   }
 
