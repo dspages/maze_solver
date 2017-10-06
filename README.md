@@ -16,8 +16,10 @@ It can then solve them using breadth-first-search, depth-first-search, or A* sea
 
 ## Instructions
 First, choose a type of search algorithm.
-Second, click solve (fast), or solve (slow). Fast solving is faster, but slow solving lets you watch more closely how the algorithm is actually exploring the maze.
+Second, click solve (normal), or solve (slow).
 Third, you can click reset to start again.
+
+Slow solving delays the processing of the maze so you can better observe and understand how the algorithm is working.
 
 ## Search Types
 

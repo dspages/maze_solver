@@ -44,7 +44,7 @@
 }
 
 .control__panel {
-  max-width: 400px;
+  max-width: 650px;
   display: flex;
   margin: auto;
   justify-content: space-around;
