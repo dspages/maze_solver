@@ -1,4 +1,4 @@
-#React Maze Solver
+# React Maze Solver
 
 This is a maze solver built in React by Daniel Pages and Justin Austria.
 
