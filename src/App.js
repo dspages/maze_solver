@@ -117,7 +117,6 @@ class App extends Component {
     } else {
       el = border.shift();
     }
-    console.log(last(el));
     boardState[last(el)[0]][last(el)[1]].dead = true;
     for (let i = 0; i < ADJACENCY_TYPES.length; i++) {
       let adj = ADJACENCY_TYPES[i];
@@ -137,7 +136,6 @@ class App extends Component {
         }
       }
     }
-    console.log(this.state.searchType);
     if(this.state.searchType === "A*") {border = border.sort(sortFunc);}
     this.setState({searchEdge: border, boardState: boardState});
   }
