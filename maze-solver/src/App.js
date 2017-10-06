@@ -41,27 +41,57 @@ const ADJACENCY_TYPES = [
   [-1,0]
 ];
 
+const last = function(ary){
+  return ary[ary.length-1];
+};
+
+const sortFunc = function(list1,list2){
+  let value1 = last(list1)[0]+last(list1)[1] - list1.length;
+  let value2 = last(list2)[0]+last(list2)[1] - list2.length;
+  if(value1>value2){return -1;}
+  if(value2>value1){return 1;}
+  if(list1.length > list2.length){return 1;}
+  if(list2.length > list1.length){return -1;}
+  return 0;
+};
+
 class App extends Component {
 
   constructor(){
     super();
     this.state = {
       searchType: "DFS",
-      gridSize: [16, 32],
+      gridSize: [12, 32],
       activated: false,
       boardState: [[]],
-      searchEdge: [[0,0]]
+      searchEdge: [[[0,0]]]
     };
     this.generateBoard = this.generateBoard.bind(this);
     this.randomize = this.randomize.bind(this);
     this.solve = this.solve.bind(this);
+    this.solveSlow = this.solveSlow.bind(this);
+    this.solveFast = this.solveFast.bind(this);
     this.searchStep = this.searchStep.bind(this);
+    this.pickType = this.pickType.bind(this);
+    setTimeout(this.randomize,0);
   }
 
-  solve(){
-    //if (this.state.activated === true) return;
+  pickType(event){
+    this.setState({searchType: event.target.value});
+  }
+
+  solveSlow(){
+    this.solve(600);
+  }
+
+  solveFast(){
+    this.solve(30);
+  }
+
+  solve(time){
+    if (this.state.activated === true) return;
     this.setState({activated: true});
-    this.interval = setInterval(this.searchStep, 50);
+    this.interval = setInterval(this.searchStep, time);
   }
 
   validTile(tile, boardState){
@@ -87,14 +117,19 @@ class App extends Component {
     } else {
       el = border.shift();
     }
-    boardState[el[0]][el[1]].dead = true;
+    console.log(last(el));
+    boardState[last(el)[0]][last(el)[1]].dead = true;
     for (let i = 0; i < ADJACENCY_TYPES.length; i++) {
       let adj = ADJACENCY_TYPES[i];
-      adj = [el[0]+adj[0],el[1]+adj[1]];
+      adj = [last(el)[0]+adj[0],last(el)[1]+adj[1]];
       if (this.validTile(adj, boardState)){
-        border.push(adj);
         boardState[adj[0]][adj[1]].border = true;
+        border.push(el.concat([adj]));
         if (boardState[adj[0]][adj[1]].end === true){
+          for (let j = 0; j < el.length; j++) {
+            boardState[el[j][0]][el[j][1]].solution = true;
+          }
+          boardState[adj[0]][adj[1]].solution = true;
           clearInterval(this.interval);
           this.setState({searchEdge: border, boardState: boardState});
           setTimeout( ()=>{alert("Maze is solved!");} , 100);
@@ -102,13 +137,17 @@ class App extends Component {
         }
       }
     }
+    console.log(this.state.searchType);
+    if(this.state.searchType === "A*") {border = border.sort(sortFunc);}
     this.setState({searchEdge: border, boardState: boardState});
   }
 
   randomize() {
+    clearInterval(this.interval);
     this.setState({
+      activated: false,
       boardState: this.generateBoard('random'),
-      searchEdge: [[0,0]]
+      searchEdge: [[[0,0]]]
     });
   }
 
@@ -121,7 +160,7 @@ class App extends Component {
         if (type === 'clear') {
           ary[i][j] = DEFAULT_TILE();
         } else {
-          if ((parseInt(Math.random() * 3) === 1) && (i > 1 || j > 1)) {
+          if ((parseInt(Math.random() * 4) < 1) && (i > 1 || j > 1)) {
             ary[i][j] = BLOCKED_TILE();
           } else {
             ary[i][j] = DEFAULT_TILE();
@@ -135,10 +174,22 @@ class App extends Component {
   }
 
   render() {
+    let list = this.state.searchEdge;
+    let out = [];
+    for (let i = 0; i < list.length; i++) {
+      out[i] = " "+last(list[i])[0]+"-"+last(list[i])[1];
+      if (i < list.length -1){out[i]+=",";}
+    }
     return (
       <div className="App">
         <Grid gridSize={this.state.gridSize} boardState={this.state.boardState} />
-        <Controls randomize={this.randomize} solve={this.solve} />
+        <Controls
+          pickType={this.pickType}
+          type={this.state.searchType}
+          randomize={this.randomize}
+          solveFast={this.solveFast}
+          solveSlow={this.solveSlow}/>
+        <p>{out}</p>
       </div>
     );
   }

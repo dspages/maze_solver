@@ -38,6 +38,10 @@
   background-color: #DCE9BE;
 }
 
+.solution--true {
+  background-color: #55AAEE;
+}
+
 .control__panel {
   max-width: 400px;
   display: flex;
