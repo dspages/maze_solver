@@ -6,7 +6,8 @@ function Tile(props) {
                     start--${props.displayProps.start}
                     end--${props.displayProps.end}
                     dead--${props.displayProps.dead}
-                    border--${props.displayProps.border}`}> </div>
+                    border--${props.displayProps.border}
+                    solution--${props.displayProps.solution}`}> </div>
   );
 }
 
