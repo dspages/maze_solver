@@ -1,6 +1,6 @@
 #React Maze Solver
 
-This is a maze solver built in react.
+This is a maze solver built in React by Daniel Pages and Justin Austria.
 
 ## Live site link
 
