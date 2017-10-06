@@ -11,8 +11,8 @@ function Controls(props) {
             <option value="A*">A* - Priority Queue - Heap</option>
           </select>
         </div>
-      <button onClick={props.solveFast}> Start (fast)! </button>
-      <button onClick={props.solveSlow}> Start (slow)! </button>
+      <button onClick={props.solveFast}> Start (normal) </button>
+      <button onClick={props.solveSlow}> Start (slow) </button>
     </div>
   );
 }
