@@ -8,6 +8,7 @@ function Controls(props) {
           <select onChange={props.pickType} value={props.type}>
             <option value="DFS">DFS - Stack - Dynamic Array</option>
             <option value="BFS">BFS - Queue - Ring Buffer</option>
+            <option value="Greedy">Greedy - Priority Queue - Heap</option>
             <option value="A*">A* - Priority Queue - Heap</option>
           </select>
         </div>
