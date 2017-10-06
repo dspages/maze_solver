@@ -61,7 +61,7 @@ class App extends Component {
     super();
     this.state = {
       searchType: "DFS",
-      gridSize: [12, 32],
+      gridSize: [16, 32],
       activated: false,
       boardState: [[]],
       searchEdge: [[[0,0]]]
