@@ -10,18 +10,18 @@ This is a maze solver built in React by Daniel Pages and Justin Austria.
 
 ## Features
 
-It can randomly generate mazes.
+- It randomly generates mazes when the user clicks "reset".
 
-The user can also toggle tiles on the maze to make them obstacles or not obstacles.
+- The user can also click on tiles to customize the maze.
 
-It can then solve them using breadth-first-search, depth-first-search, or A* search.
+- It can then solve the maze using breadth-first-search, depth-first-search, greedy search, or A* search.
 
 ## Instructions
 First, choose a type of search algorithm.
 Second, click solve (normal), or solve (slow).
 Third, you can click reset to start again.
 
-Slow solving delays the processing of the maze so you can better observe and understand how the algorithm is working.
+Slow solving delays the processing of the maze so you can better observe and understand how the algorithm is working. You can watch the nodes be processed, as a list at the bottom of the screen, and note that they each search exhibits the correct behavior for its own abstract data type (stack, queue or priority queue).
 
 ## Search Types
 
