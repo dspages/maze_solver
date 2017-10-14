@@ -88,8 +88,6 @@ class App extends Component {
   }
 
   toggleBlock(event){
-    console.log(event.target);
-    console.log(event.target.id);
     let coords = event.target.id.split(",");
     let board = this.state.boardState;
     let prev = board[coords[0]][coords[1]].blocked;
