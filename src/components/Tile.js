@@ -7,7 +7,9 @@ function Tile(props) {
                     end--${props.displayProps.end}
                     dead--${props.displayProps.dead}
                     border--${props.displayProps.border}
-                    solution--${props.displayProps.solution}`}> </div>
+                    solution--${props.displayProps.solution}`}
+                    id={[props.xCoord, props.yCoord]}
+                    onClick={props.toggleBlock}> </div>
   );
 }
 

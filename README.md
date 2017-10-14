@@ -12,6 +12,8 @@ This is a maze solver built in React by Daniel Pages and Justin Austria.
 
 It can randomly generate mazes.
 
+The user can also toggle tiles on the maze to make them obstacles or not obstacles.
+
 It can then solve them using breadth-first-search, depth-first-search, or A* search.
 
 ## Instructions
@@ -54,7 +56,7 @@ The second option is breadth first search. Breadth first search uses a queue as 
 [RB]: https://en.wikipedia.org/wiki/Circular_buffer
 
 ### Greedy
-The third option is the greedy search. This uses a priority queue as its abstract data type, which could be implemented with a heap as its data structure. Greedy search is usually the fastest type of search to find a solution for this particular problem, but it may not be the optimal solution. Furthermore, Greedy searches require a heuristic to estimate the value of a given search node - in this app, it is easy to calculate the distance from the goal to estimate the value of the target, but a good and easily computable heuristic may not be available in all cases.
+The third option is the greedy search. This uses a priority queue as its abstract data type, which could be implemented with a heap as its data structure. Greedy search is usually the fastest type of search to find a solution for this particular problem in terms of the run time of the algorithm, but it may not be the optimal solution in terms of distance. Furthermore, Greedy searches require a heuristic to estimate the value of a given search node - in this app, it is easy to calculate the distance from the goal to estimate the value of the target, but a good and easily computable heuristic may not be available in all cases.
 
 [Greedy][greed]
 
@@ -69,7 +71,7 @@ The third option is the greedy search. This uses a priority queue as its abstrac
 [heap]: https://en.wikipedia.org/wiki/Heap_(data_structure)
 
 ### A*
-The final option is an A* search. Like Greedy Search, A* uses a priority queue as its abstract data type, which could be implemented with a heap as its data structure. A* search guarantees an optimal solution if one exists, and explores more efficiently than Breadth First Search. Like a greedy search, A* requires a heuristic, and the heuristic must be "admissible" if the A* is to guarantee an optimal solution. Read more below to understand admissibility and A* searches.
+The final option is an A* search. Like Greedy Search, A* uses a priority queue as its abstract data type, which could be implemented with a heap as its data structure. A* search guarantees an optimal solution if one exists, and explores more efficiently than Breadth First Search by taking advantage of the heuristic to explore more promising nodes first. Like a greedy search, A* requires a heuristic, and the heuristic must be "admissible" if the A* is to guarantee an optimal solution. Read more in the link below to understand admissibility and A* searches.
 
 [A* Search][astar]
 
@@ -78,7 +80,5 @@ The final option is an A* search. Like Greedy Search, A* uses a priority queue a
 ## Planned Features
 
 - At present, the abstract data types (ring buffer and priority queue) are implemented sub-optimally in the code. When time permits, we will replace them with the correct data structures.
-
-- Users should be able to custom-define their mazes by changing the dimensions and by clicking on tiles to toggle them blocked or not.
 
 - We plan to perform additional styling to make the website itself more visually appealing, and additional refactoring to make the JavaScript code more modular and readable.

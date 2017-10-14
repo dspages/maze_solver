@@ -81,7 +81,22 @@ class App extends Component {
     this.solveFast = this.solveFast.bind(this);
     this.searchStep = this.searchStep.bind(this);
     this.pickType = this.pickType.bind(this);
+    this.toggleBlock = this.toggleBlock.bind(this);
     setTimeout(this.randomize,0);
+  }
+
+  toggleBlock(event){
+    console.log(event.target);
+    console.log(event.target.id);
+    let coords = event.target.id.split(",");
+    let board = this.state.boardState;
+    let prev = board[coords[0]][coords[1]].blocked;
+    if(prev){
+      board[coords[0]][coords[1]].blocked = false;
+    }else{
+      board[coords[0]][coords[1]].blocked = true;
+    }
+    this.setState({boardState: board});
   }
 
   pickType(event){
@@ -189,7 +204,9 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <Grid gridSize={this.state.gridSize} boardState={this.state.boardState} />
+        <Grid gridSize={this.state.gridSize}
+          boardState={this.state.boardState}
+          toggleBlock={this.toggleBlock}/>
         <Controls
           pickType={this.pickType}
           type={this.state.searchType}

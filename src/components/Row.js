@@ -6,10 +6,14 @@ function Row(props) {
     let tiles = [];
 
     while (j < props.gridSize){
-      tiles.push(<Tile displayProps={props.tiles[j]} />);
+      tiles.push(<Tile
+        displayProps={props.tiles[j]}
+        toggleBlock={props.toggleBlock}
+        xCoord={props.xCoord}
+        yCoord={j}/>);
       j++;
     }
-    
+
     return(
       <div className="row">{tiles}</div>
     );
