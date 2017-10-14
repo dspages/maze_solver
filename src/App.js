@@ -42,22 +42,24 @@ const ADJACENCY_TYPES = [
 ];
 
 const last = function(ary){
-  return ary[ary.length-1];
+  return ary[ary.length - 1];
 };
 
-const sortFunc = function(list1,list2){
-  let value1 = last(list1)[0]+last(list1)[1] - list1.length;
-  let value2 = last(list2)[0]+last(list2)[1] - list2.length;
-  if(value1 > value2){return -1;}
-  if(value2 > value1){return 1;}
+//A* considers both heuristic and cost
+const aStarSort = function(list1, list2){
+  let value1 = last(list1)[0] + last(list1)[1] - list1.length;
+  let value2 = last(list2)[0] + last(list2)[1] - list2.length;
+  //if(value1 > value2){return -1;}
+  //if(value2 > value1){return 1;}
   if(list1.length > list2.length){return 1;}//Ties broken in favor of breadth
   if(list2.length > list1.length){return -1;}//Ties broken in favor of breadth
   return 0;
 };
 
-const greedySort = function(list1,list2){
-  let value1 = last(list1)[0]+last(list1)[1];
-  let value2 = last(list2)[0]+last(list2)[1];
+//Greedy only considers heuristic and ignores cost.
+const greedySort = function(list1, list2){
+  let value1 = last(list1)[0] + last(list1)[1];
+  let value2 = last(list2)[0] + last(list2)[1];
   if(value1 > value2){return -1;}
   if(value2 > value1){return 1;}
   return 0;
@@ -82,7 +84,7 @@ class App extends Component {
     this.searchStep = this.searchStep.bind(this);
     this.pickType = this.pickType.bind(this);
     this.toggleBlock = this.toggleBlock.bind(this);
-    setTimeout(this.randomize,0);
+    setTimeout(this.randomize,0);//Ensure that all other pending actions have been completed before we randomize.
   }
 
   toggleBlock(event){
@@ -159,7 +161,7 @@ class App extends Component {
         }
       }
     }
-    if(this.state.searchType === "A*") {border = border.sort(sortFunc);}
+    if(this.state.searchType === "A*") {border = border.sort(aStarSort);}
     if (this.state.searchType === "Greedy") {border = border.sort(greedySort);}
     this.setState({searchEdge: border, boardState: boardState});
   }
