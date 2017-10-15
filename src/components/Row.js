@@ -7,6 +7,7 @@ function Row(props) {
 
     while (j < props.gridSize){
       tiles.push(<Tile
+        key={j}
         displayProps={props.tiles[j]}
         toggleBlock={props.toggleBlock}
         xCoord={props.xCoord}

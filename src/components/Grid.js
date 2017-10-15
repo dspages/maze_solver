@@ -12,6 +12,7 @@ class Grid extends Component {
     let rows = [];
     while (i < this.props.boardState.length) {
       rows.push(<Row
+        key={i}
         gridSize={this.props.boardState[i].length}
         tiles={this.props.boardState[i]}
         toggleBlock={this.props.toggleBlock}
