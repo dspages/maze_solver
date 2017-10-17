@@ -13,9 +13,6 @@ import {
 import { aStarSortComparison, greedySortComparison } from '../util/comparisons';
 import { last } from '../util/misc_helpers';
 
-
-
-
 class App extends Component {
 
   constructor(){
@@ -64,10 +61,16 @@ class App extends Component {
   }
 
   validTile(tile, boardState){
-    if(tile[0] < 0 || tile[0] >= this.state.gridSize[0]){ return false; }
-    if(tile[1] < 0 || tile[1] >= this.state.gridSize[1]){ return false; }
+    if(tile[0] < 0 || tile[0] >= this.state.gridSize[0]){
+      return false;
+    }
+    if(tile[1] < 0 || tile[1] >= this.state.gridSize[1]){
+      return false;
+    }
     let targetTile = boardState[tile[0]][tile[1]];
-    if(targetTile.dead || targetTile.blocked || targetTile.border){ return false; }
+    if(targetTile.dead || targetTile.blocked || targetTile.border){
+      return false;
+    }
     return true;
   }
 
@@ -110,8 +113,12 @@ class App extends Component {
         if(this.checkIfSolved(el, adj, border, boardState)) {return;}
       }
     }
-    if(this.state.searchType === "A*") {border = border.sort(aStarSortComparison);}
-    if (this.state.searchType === "Greedy") {border = border.sort(greedySortComparison);}
+    if(this.state.searchType === "A*") {
+      border = border.sort(aStarSortComparison);
+    }
+    if(this.state.searchType === "Greedy") {
+      border = border.sort(greedySortComparison);
+    }
     this.setState({searchEdge: border, boardState: boardState});
   }
 
@@ -149,7 +156,7 @@ class App extends Component {
   render() {
     let list = this.state.searchEdge;
 
-    //This loop creates a list of the current leaf nodes of the search tree
+    //This loop creates a list of the current border nodes of the search tree
     //so the user can observe the abstract data type the algorithm is using
     let out = [];
     for (let i = 0; i < list.length; i++) {
