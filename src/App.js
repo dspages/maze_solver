@@ -3,79 +3,24 @@ import logo from './logo.svg';
 import './App.css';
 import Grid from './components/Grid';
 import Controls from './components/Controls';
+import {
+  DEFAULT_TILE,
+  START_TILE,
+  END_TILE,
+  BLOCKED_TILE,
+  ADJACENCY_TYPES,
+  DEFAULT_APP_STATE} from '../util/consts';
+import { aStarSortComparison, greedySortComparison } from '../util/comparisons';
+import { last } from '../util/misc_helpers';
 
-const DEFAULT_TILE = ()=>{
-  return {
-    blocked: false,
-    dead: false
-  };
-};
 
-const BLOCKED_TILE = () => {
-  return {
-    blocked: true,
-    dead: false
-  };
-};
 
-const START_TILE = () => {
-  return {
-    blocked: false,
-    start: true,
-    dead: false
-  };
-};
-
-const END_TILE = () => {
-  return {
-    blocked: false,
-    end: true,
-    dead: false
-  };
-};
-
-const ADJACENCY_TYPES = [
-  [0,-1],
-  [0,1],
-  [1,0],
-  [-1,0]
-];
-
-const last = function(ary){
-  return ary[ary.length - 1];
-};
-
-//A* considers both heuristic and cost
-const aStarSort = function(list1, list2){
-  let value1 = last(list1)[0] + last(list1)[1] - list1.length;
-  let value2 = last(list2)[0] + last(list2)[1] - list2.length;
-  if(value1 > value2){return -1;}
-  if(value2 > value1){return 1;}
-  if(list1.length > list2.length){return 1;}//Ties broken in favor of breadth
-  if(list2.length > list1.length){return -1;}//Ties broken in favor of breadth
-  return 0;
-};
-
-//Greedy only considers heuristic and ignores cost.
-const greedySort = function(list1, list2){
-  let value1 = last(list1)[0] + last(list1)[1];
-  let value2 = last(list2)[0] + last(list2)[1];
-  if(value1 > value2){return -1;}
-  if(value2 > value1){return 1;}
-  return 0;
-};
 
 class App extends Component {
 
   constructor(){
     super();
-    this.state = {
-      searchType: "DFS",
-      gridSize: [16, 32],
-      activated: false,
-      boardState: [[]],
-      searchEdge: [[[0,0]]]
-    };
+    this.state = DEFAULT_APP_STATE;
     this.generateBoard = this.generateBoard.bind(this);
     this.randomize = this.randomize.bind(this);
     this.solve = this.solve.bind(this);
@@ -84,6 +29,7 @@ class App extends Component {
     this.searchStep = this.searchStep.bind(this);
     this.pickType = this.pickType.bind(this);
     this.toggleBlock = this.toggleBlock.bind(this);
+    this.checkIfSolved = this.checkIfSolved.bind(this);
     setTimeout(this.randomize,0);//Ensure that all other pending actions have been completed before we randomize.
   }
 
@@ -125,6 +71,20 @@ class App extends Component {
     return true;
   }
 
+  checkIfSolved(el, adj, border, boardState){
+    if (boardState[adj[0]][adj[1]].end === true){
+      for (let j = 0; j < el.length; j++) {
+        boardState[el[j][0]][el[j][1]].solution = true;
+      }
+      boardState[adj[0]][adj[1]].solution = true;
+      clearInterval(this.interval);
+      this.setState({searchEdge: border, boardState: boardState});
+      setTimeout( ()=>{alert("Maze is solved!");} , 100);
+      return true;
+    }
+    return false;
+  }
+
   searchStep(){
     let border = this.state.searchEdge;
     if (border.length === 0){
@@ -147,20 +107,11 @@ class App extends Component {
       if (this.validTile(adj, boardState)){
         boardState[adj[0]][adj[1]].border = true;
         border.push(el.concat([adj]));
-        if (boardState[adj[0]][adj[1]].end === true){
-          for (let j = 0; j < el.length; j++) {
-            boardState[el[j][0]][el[j][1]].solution = true;
-          }
-          boardState[adj[0]][adj[1]].solution = true;
-          clearInterval(this.interval);
-          this.setState({searchEdge: border, boardState: boardState});
-          setTimeout( ()=>{alert("Maze is solved!");} , 100);
-          return;
-        }
+        if(this.checkIfSolved(el, adj, border, boardState)) {return;}
       }
     }
-    if(this.state.searchType === "A*") {border = border.sort(aStarSort);}
-    if (this.state.searchType === "Greedy") {border = border.sort(greedySort);}
+    if(this.state.searchType === "A*") {border = border.sort(aStarSortComparison);}
+    if (this.state.searchType === "Greedy") {border = border.sort(greedySortComparison);}
     this.setState({searchEdge: border, boardState: boardState});
   }
 
@@ -197,11 +148,15 @@ class App extends Component {
 
   render() {
     let list = this.state.searchEdge;
+
+    //This loop creates a list of the current leaf nodes of the search tree
+    //so the user can observe the abstract data type the algorithm is using
     let out = [];
     for (let i = 0; i < list.length; i++) {
       out[i] = " "+last(list[i])[0]+"-"+last(list[i])[1];
       if (i < list.length -1){out[i]+=",";}
     }
+
     return (
       <div className="App">
         <Grid gridSize={this.state.gridSize}
