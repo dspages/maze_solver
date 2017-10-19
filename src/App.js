@@ -11,7 +11,7 @@ import {
   ADJACENCY_TYPES,
   DEFAULT_APP_STATE} from '../util/consts';
 import { aStarSortComparison, greedySortComparison } from '../util/comparisons';
-import { last } from '../util/misc_helpers';
+import { last, assembleList } from '../util/misc_helpers';
 
 class App extends Component {
 
@@ -154,15 +154,7 @@ class App extends Component {
   }
 
   render() {
-    let list = this.state.searchEdge;
-
-    //This loop creates a list of the current border nodes of the search tree
-    //so the user can observe the abstract data type the algorithm is using
-    let out = [];
-    for (let i = 0; i < list.length; i++) {
-      out[i] = " "+last(list[i])[0]+"-"+last(list[i])[1];
-      if (i < list.length -1){out[i]+=",";}
-    }
+    let list = assembleList(this.state.searchEdge);
 
     return (
       <div className="App">
@@ -175,7 +167,7 @@ class App extends Component {
           randomize={this.randomize}
           solveFast={this.solveFast}
           solveSlow={this.solveSlow}/>
-        <p>{out}</p>
+        <p>{list}</p>
       </div>
     );
   }
